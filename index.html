@@ -1,0 +1,735 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#5b5ce2">
+
+    <title>Мой гардероб</title>
+
+    <link rel="manifest" href="./manifest.json">
+    <link rel="apple-touch-icon" href="./icons/icon-192.png">
+    <link rel="stylesheet" href="./style.css">
+
+    <script type="module" src="./app.js"></script>
+</head>
+
+<body>
+    <main class="app-content">
+
+        <!-- Экран вещей -->
+        <section id="screen-items" class="screen" aria-labelledby="items-title">
+
+            <header class="screen-header">
+                <h1 id="items-title">Мои вещи</h1>
+            </header>
+
+            <p id="items-message"
+               class="success-message"
+               role="status"
+               aria-live="polite"
+               aria-atomic="true"></p>
+
+            <div id="items-content" class="items-content">
+
+                <button id="add-item-button"
+                        type="button"
+                        class="button button-primary button-full"
+                        aria-controls="add-item-form"
+                        aria-expanded="false"
+                        disabled>
+                    + Добавить вещь
+                </button>
+
+                <!-- Фильтры -->
+                <div class="filters"
+                     role="group"
+                     aria-label="Фильтр вещей по статусу">
+
+                    <button type="button"
+                            class="filter-button is-active"
+                            data-filter="all"
+                            aria-pressed="true">
+                        Все
+                    </button>
+
+                    <button type="button"
+                            class="filter-button"
+                            data-filter="clean"
+                            aria-pressed="false">
+                        Чистые
+                    </button>
+
+                    <button type="button"
+                            class="filter-button"
+                            data-filter="dirty"
+                            aria-pressed="false">
+                        Грязные
+                    </button>
+
+                </div>
+
+                <p id="items-status-error"
+                   class="form-error"
+                   role="alert"
+                   aria-atomic="true"></p>
+
+                <div id="items-list" class="items-list"></div>
+
+                <!-- Пустое состояние -->
+                <div id="items-empty-state" class="card empty-state">
+
+                    <svg class="empty-state-icon"
+                         width="48"
+                         height="48"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.5"
+                         stroke-linecap="round"
+                         stroke-linejoin="round"
+                         aria-hidden="true"
+                         focusable="false">
+                        <path d="M9 3L3 6l2 5 3-1v11h8V10l3 1 2-5-6-3a3 3 0 0 1-6 0Z"/>
+                    </svg>
+
+                    <p id="items-state-message"
+                       aria-live="polite"
+                       aria-atomic="true">
+                        Загрузка вещей…
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Форма добавления вещи -->
+            <form id="add-item-form"
+                  class="card item-form"
+                  aria-labelledby="add-item-title"
+                  novalidate
+                  hidden>
+
+                <h2 id="add-item-title" tabindex="-1">
+                    Добавить вещь
+                </h2>
+
+                <fieldset id="item-form-fields" class="form-fields">
+
+                    <!-- Фотография -->
+                    <div class="form-group">
+
+                        <label for="item-photo">Фотография</label>
+
+                        <input id="item-photo"
+                               name="photo"
+                               class="form-input photo-input"
+                               type="file"
+                               accept="image/*"
+                               aria-describedby="photo-message"
+                               required>
+
+                        <p id="photo-message"
+                           class="form-hint"
+                           role="status"
+                           aria-live="polite"
+                           aria-atomic="true"></p>
+
+                        <div id="photo-preview-container"
+                             class="photo-preview-container"
+                             hidden>
+
+                            <img id="photo-preview"
+                                 class="photo-preview"
+                                 alt="Предварительный просмотр фотографии вещи">
+
+                        </div>
+
+                    </div>
+
+                    <!-- Название -->
+                    <div class="form-group">
+
+                        <label for="item-name">Название</label>
+
+                        <input id="item-name"
+                               name="name"
+                               class="form-input"
+                               type="text"
+                               placeholder="Например, белая футболка"
+                               required>
+
+                    </div>
+
+                    <!-- Категория -->
+                    <div class="form-group">
+
+                        <label for="item-category">Категория</label>
+
+                        <select id="item-category"
+                                name="category"
+                                class="form-input"
+                                required>
+
+                            <option value="" selected disabled>
+                                Выберите категорию
+                            </option>
+
+                            <option value="outerwear">
+                                Верхняя одежда
+                            </option>
+
+                            <option value="top">Верх</option>
+
+                            <option value="bottom">Низ</option>
+
+                            <option value="shoes">Обувь</option>
+
+                            <option value="accessories">
+                                Аксессуары
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- Статус -->
+                    <fieldset class="status-group">
+
+                        <legend>Статус</legend>
+
+                        <div class="status-options">
+
+                            <label class="status-option">
+
+                                <input type="radio"
+                                       name="status"
+                                       value="clean"
+                                       checked
+                                       required>
+
+                                <span>Чисто</span>
+
+                            </label>
+
+                            <label class="status-option">
+
+                                <input type="radio"
+                                       name="status"
+                                       value="dirty"
+                                       required>
+
+                                <span>Грязно</span>
+
+                            </label>
+
+                        </div>
+
+                    </fieldset>
+
+                    <p id="item-form-error"
+                       class="form-error"
+                       role="alert"
+                       aria-live="assertive"
+                       aria-atomic="true"></p>
+
+                    <!-- Кнопки формы -->
+                    <div class="form-actions">
+
+                        <button id="save-item-button"
+                                type="submit"
+                                class="button button-primary button-full"
+                                disabled>
+                            Сохранить вещь
+                        </button>
+
+                        <button id="cancel-item-button"
+                                type="button"
+                                class="button button-secondary button-full">
+                            Отмена
+                        </button>
+
+                    </div>
+
+                </fieldset>
+
+                <p id="save-message"
+                   class="form-hint"
+                   role="status"
+                   aria-live="polite"
+                   aria-atomic="true"></p>
+
+            </form>
+
+        </section>
+
+
+        <!-- Экран белья и носков -->
+        <section id="screen-counters"
+                 class="screen"
+                 aria-labelledby="counters-title"
+                 hidden>
+
+            <header class="screen-header">
+                <h1 id="counters-title">Бельё и носки</h1>
+            </header>
+
+            <p id="counters-state-message"
+               class="form-hint"
+               role="status"
+               aria-live="polite"
+               aria-atomic="true">
+                Загрузка…
+            </p>
+
+            <p id="counters-error"
+               class="form-error"
+               role="alert"
+               aria-atomic="true"></p>
+
+            <!-- Карточка белья -->
+            <article class="card counter-card"
+                     aria-labelledby="underwear-title">
+
+                <h2 id="underwear-title">Бельё</h2>
+
+                <div class="counter-row">
+
+                    <p class="counter-label">
+                        Чистых:
+                        <strong id="underwear-clean"
+                                class="counter-value counter-value-clean">—</strong>
+                    </p>
+
+                    <div class="counter-actions">
+
+                        <button type="button"
+                                class="button button-counter"
+                                aria-label="Уменьшить количество чистого белья"
+                                data-category="underwear"
+                                data-status="clean"
+                                data-delta="-1"
+                                disabled>
+                            −
+                        </button>
+
+                        <button type="button"
+                                class="button button-counter"
+                                aria-label="Увеличить количество чистого белья"
+                                data-category="underwear"
+                                data-status="clean"
+                                data-delta="1"
+                                disabled>
+                            +
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="counter-row">
+
+                    <p class="counter-label">
+                        Грязных:
+                        <strong id="underwear-dirty"
+                                class="counter-value counter-value-dirty">—</strong>
+                    </p>
+
+                    <div class="counter-actions">
+
+                        <button type="button"
+                                class="button button-counter"
+                                aria-label="Уменьшить количество грязного белья"
+                                data-category="underwear"
+                                data-status="dirty"
+                                data-delta="-1"
+                                disabled>
+                            −
+                        </button>
+
+                        <button type="button"
+                                class="button button-counter"
+                                aria-label="Увеличить количество грязного белья"
+                                data-category="underwear"
+                                data-status="dirty"
+                                data-delta="1"
+                                disabled>
+                            +
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <button type="button"
+                        class="button button-secondary button-full"
+                        aria-label="Перенести одну единицу чистого белья в грязные"
+                        data-move-category="underwear"
+                        disabled>
+                    Перенести в грязные
+                </button>
+
+            </article>
+
+
+            <!-- Карточка носков -->
+            <article class="card counter-card"
+                     aria-labelledby="socks-title">
+
+                <h2 id="socks-title">Носки</h2>
+
+                <div class="counter-row">
+
+                    <p class="counter-label">
+                        Чистых пар:
+                        <strong id="socks-clean"
+                                class="counter-value counter-value-clean">—</strong>
+                    </p>
+
+                    <div class="counter-actions">
+
+                        <button type="button"
+                                class="button button-counter"
+                                aria-label="Уменьшить количество пар чистых носков"
+                                data-category="socks"
+                                data-status="clean"
+                                data-delta="-1"
+                                disabled>
+                            −
+                        </button>
+
+                        <button type="button"
+                                class="button button-counter"
+                                aria-label="Увеличить количество пар чистых носков"
+                                data-category="socks"
+                                data-status="clean"
+                                data-delta="1"
+                                disabled>
+                            +
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="counter-row">
+
+                    <p class="counter-label">
+                        Грязных пар:
+                        <strong id="socks-dirty"
+                                class="counter-value counter-value-dirty">—</strong>
+                    </p>
+
+                    <div class="counter-actions">
+
+                        <button type="button"
+                                class="button button-counter"
+                                aria-label="Уменьшить количество пар грязных носков"
+                                data-category="socks"
+                                data-status="dirty"
+                                data-delta="-1"
+                                disabled>
+                            −
+                        </button>
+
+                        <button type="button"
+                                class="button button-counter"
+                                aria-label="Увеличить количество пар грязных носков"
+                                data-category="socks"
+                                data-status="dirty"
+                                data-delta="1"
+                                disabled>
+                            +
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <button type="button"
+                        class="button button-secondary button-full"
+                        aria-label="Перенести одну пару чистых носков в грязные"
+                        data-move-category="socks"
+                        disabled>
+                    Перенести в грязные
+                </button>
+
+            </article>
+
+            <!-- Общая стирка -->
+            <button id="wash-all-button"
+                    type="button"
+                    class="button button-primary button-full"
+                    disabled>
+                Постирал всё
+            </button>
+
+        </section>
+
+
+        <!-- Экран образов -->
+        <section id="screen-outfits"
+                 class="screen"
+                 aria-labelledby="outfits-title"
+                 hidden>
+
+            <header class="screen-header">
+                <h1 id="outfits-title">Мои образы</h1>
+            </header>
+
+            <p id="outfits-message"
+               class="success-message"
+               role="status"
+               aria-live="polite"
+               aria-atomic="true"></p>
+
+            <p id="outfits-error"
+               class="form-error"
+               role="alert"
+               aria-atomic="true"></p>
+
+            <!-- Список сохранённых образов -->
+            <div id="outfits-content" class="outfits-stack">
+
+                <button id="add-outfit-button"
+                        type="button"
+                        class="button button-primary button-full"
+                        aria-controls="add-outfit-form"
+                        aria-expanded="false"
+                        disabled>
+                    + Создать образ
+                </button>
+
+                <p id="outfits-create-hint"
+                   class="form-hint"
+                   role="status"></p>
+
+                <div id="outfits-list" class="outfits-stack"></div>
+
+                <!-- Пустое состояние образов -->
+                <div id="outfits-empty-state"
+                     class="card empty-state">
+
+                    <svg class="empty-state-icon"
+                         width="48"
+                         height="48"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.5"
+                         stroke-linecap="round"
+                         stroke-linejoin="round"
+                         aria-hidden="true"
+                         focusable="false">
+
+                        <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+                        <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                        <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+                        <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+
+                    </svg>
+
+                    <p id="outfits-state-message"
+                       role="status"
+                       aria-live="polite">
+                        Загрузка образов…
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Форма создания образа -->
+            <form id="add-outfit-form"
+                  class="card item-form"
+                  aria-labelledby="add-outfit-title"
+                  novalidate
+                  hidden>
+
+                <h2 id="add-outfit-title" tabindex="-1">
+                    Создать образ
+                </h2>
+
+                <fieldset id="outfit-form-fields"
+                          class="form-fields">
+
+                    <div class="form-group">
+
+                        <label for="outfit-name">
+                            Название образа
+                        </label>
+
+                        <input id="outfit-name"
+                               class="form-input"
+                               name="name"
+                               type="text"
+                               placeholder="Например, на каждый день"
+                               required>
+
+                    </div>
+
+                    <p id="outfit-selected-count"
+                       role="status"
+                       aria-live="polite"
+                       aria-atomic="true">
+                        Выбрано вещей: 0
+                    </p>
+
+                    <!-- Выбор вещей из гардероба -->
+                    <div id="outfit-picker"
+                         class="items-list"
+                         role="group"
+                         aria-label="Выбор вещей для образа"></div>
+
+                    <p id="outfit-form-error"
+                       class="form-error"
+                       role="alert"
+                       aria-atomic="true"></p>
+
+                    <div class="form-actions">
+
+                        <button id="save-outfit-button"
+                                type="submit"
+                                class="button button-primary button-full"
+                                disabled>
+                            Сохранить образ
+                        </button>
+
+                        <button id="cancel-outfit-button"
+                                type="button"
+                                class="button button-secondary button-full">
+                            Отмена
+                        </button>
+
+                    </div>
+
+                </fieldset>
+
+                <p id="outfit-save-message"
+                   class="form-hint"
+                   role="status"
+                   aria-live="polite"></p>
+
+            </form>
+
+            <!-- Детальный просмотр образа -->
+            <article id="outfit-detail"
+                     class="card outfits-stack"
+                     aria-labelledby="outfit-detail-title"
+                     hidden>
+
+                <h2 id="outfit-detail-title"
+                    tabindex="-1"></h2>
+
+                <div id="outfit-detail-items"
+                     class="items-grid"></div>
+
+                <button id="back-to-outfits-button"
+                        type="button"
+                        class="button button-secondary button-full">
+                    Назад к образам
+                </button>
+
+            </article>
+
+        </section>
+
+    </main>
+
+
+    <!-- Нижняя навигация -->
+    <nav class="bottom-nav"
+         aria-label="Основная навигация">
+
+        <div class="bottom-nav-inner">
+
+            <!-- Вещи -->
+            <button type="button"
+                    class="nav-button is-active"
+                    data-screen="items"
+                    aria-controls="screen-items"
+                    aria-current="page">
+
+                <svg class="nav-icon"
+                     width="24"
+                     height="24"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.7"
+                     stroke-linecap="round"
+                     stroke-linejoin="round"
+                     aria-hidden="true"
+                     focusable="false">
+
+                    <path d="M9 3L3 6l2 5 3-1v11h8V10l3 1 2-5-6-3a3 3 0 0 1-6 0Z"/>
+
+                </svg>
+
+                <span>Вещи</span>
+
+            </button>
+
+            <!-- Бельё и носки -->
+            <button type="button"
+                    class="nav-button"
+                    data-screen="counters"
+                    aria-controls="screen-counters">
+
+                <svg class="nav-icon"
+                     width="24"
+                     height="24"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.7"
+                     stroke-linecap="round"
+                     stroke-linejoin="round"
+                     aria-hidden="true"
+                     focusable="false">
+
+                    <path d="M8 3h8v10l4 3a3 3 0 0 1-2 5H9a3 3 0 0 1-3-3l2-3V3Z"/>
+                    <path d="M8 7h8"/>
+
+                </svg>
+
+                <span>Бельё и носки</span>
+
+            </button>
+
+            <!-- Образы -->
+            <button type="button"
+                    class="nav-button"
+                    data-screen="outfits"
+                    aria-controls="screen-outfits">
+
+                <svg class="nav-icon"
+                     width="24"
+                     height="24"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.7"
+                     stroke-linecap="round"
+                     stroke-linejoin="round"
+                     aria-hidden="true"
+                     focusable="false">
+
+                    <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+                    <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                    <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+                    <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+
+                </svg>
+
+                <span>Образы</span>
+
+            </button>
+
+        </div>
+
+    </nav>
+
+</body>
+</html>

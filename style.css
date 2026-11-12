@@ -1,0 +1,1103 @@
+
+/* Основные переменные */
+:root {
+    color-scheme: light;
+
+    --color-background: #f5f6fa;
+    --color-card: #ffffff;
+
+    --color-text: #202331;
+    --color-muted: #656b7a;
+
+    --color-accent: #5b5ce2;
+    --color-accent-dark: #4849c4;
+    --color-accent-light: #ededff;
+
+    --color-border: #e4e7ef;
+
+    --color-disabled-bg: #e9ebf1;
+    --color-disabled-text: #737987;
+
+    --color-error: #b42318;
+    --color-success: #18794e;
+    --color-success-bg: #eaf7ef;
+    --color-dirty-bg: #fef0ee;
+
+    --radius-card: 18px;
+    --radius-button: 12px;
+
+    --nav-height: 80px;
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+    --shadow-card: 0 3px 14px rgba(32, 35, 49, 0.04);
+}
+
+
+/* Базовые стили */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    font-size: 16px;
+    line-height: 1.5;
+
+    color: var(--color-text);
+    background-color: var(--color-background);
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    background-color: var(--color-background);
+}
+
+h1,
+h2,
+p {
+    margin: 0;
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.6px;
+}
+
+h2 {
+    font-size: 20px;
+    font-weight: 650;
+    line-height: 1.3;
+}
+
+button {
+    font: inherit;
+    color: inherit;
+
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+
+    cursor: pointer;
+}
+
+button:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+}
+
+button:disabled {
+    cursor: not-allowed;
+}
+
+
+/* Скрытие неактивных элементов */
+[hidden] {
+    display: none !important;
+}
+
+
+/* Основной контейнер */
+.app-content {
+    width: 100%;
+    max-width: 480px;
+
+    margin: 0 auto;
+
+    padding-top: calc(
+        24px + env(safe-area-inset-top, 0px)
+    );
+
+    padding-right: max(
+        16px,
+        env(safe-area-inset-right, 0px)
+    );
+
+    padding-bottom: calc(
+        var(--nav-height) + var(--safe-bottom) + 24px
+    );
+
+    padding-left: max(
+        16px,
+        env(safe-area-inset-left, 0px)
+    );
+}
+
+
+/* Экраны */
+.screen {
+    display: flex;
+    flex-direction: column;
+
+    gap: 16px;
+    min-width: 0;
+}
+
+.screen-header {
+    padding-bottom: 4px;
+}
+
+.screen-header h1 {
+    overflow-wrap: anywhere;
+}
+
+
+/* Карточки */
+.card {
+    min-width: 0;
+    padding: 18px;
+
+    background-color: var(--color-card);
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+
+    box-shadow: var(--shadow-card);
+}
+
+
+/* Общие стили кнопок */
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 0;
+    min-height: 48px;
+
+    padding: 12px 16px;
+
+    border: 1px solid transparent;
+    border-radius: var(--radius-button);
+
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: center;
+
+    transition:
+        background-color 150ms ease,
+        border-color 150ms ease,
+        color 150ms ease;
+}
+
+.button-full {
+    width: 100%;
+}
+
+.button-primary {
+    color: #ffffff;
+    background-color: var(--color-accent);
+}
+
+.button-primary:not(:disabled):active {
+    background-color: var(--color-accent-dark);
+}
+
+.button-secondary {
+    color: var(--color-accent);
+
+    background-color: var(--color-accent-light);
+    border-color: var(--color-accent-light);
+}
+
+.button-secondary:not(:disabled):active {
+    background-color: #dcdcff;
+}
+
+.button:disabled {
+    color: var(--color-disabled-text);
+    background-color: var(--color-disabled-bg);
+
+    border-color: transparent;
+    opacity: 1;
+}
+
+
+/* Содержимое экрана вещей */
+.items-content {
+    display: flex;
+    flex-direction: column;
+
+    gap: 16px;
+    min-width: 0;
+}
+
+
+/* Фильтры */
+.filters {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 8px;
+}
+
+.filter-button {
+    min-width: 0;
+    min-height: 44px;
+
+    padding: 10px 4px;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-button);
+
+    background-color: var(--color-card);
+    color: var(--color-muted);
+
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.25;
+    text-align: center;
+
+    transition:
+        background-color 150ms ease,
+        border-color 150ms ease,
+        color 150ms ease;
+}
+
+.filter-button.is-active {
+    color: #ffffff;
+
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+
+    font-weight: 600;
+}
+
+.filter-button:active {
+    border-color: var(--color-accent);
+}
+
+
+/* Список вещей */
+.items-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 20px;
+    min-width: 0;
+}
+
+.items-list:empty {
+    display: none;
+}
+
+
+/* Категории */
+.item-category {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+    min-width: 0;
+}
+
+.item-category h2 {
+    overflow-wrap: anywhere;
+}
+
+
+/* Сетка вещей */
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+    min-width: 0;
+
+    align-items: stretch;
+}
+
+
+/* Карточка вещи */
+.item-card.card {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+    min-width: 0;
+
+    padding: 10px;
+}
+
+
+/* Фотографии вещей */
+.item-photo-frame {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+
+    min-width: 0;
+    overflow: hidden;
+
+    border-radius: var(--radius-button);
+    background-color: var(--color-background);
+}
+
+.item-photo {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+}
+
+
+/* Название вещи */
+.item-name {
+    margin: 0;
+    min-width: 0;
+
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* Кнопки статусов */
+.item-status-button {
+    width: 100%;
+    min-height: 44px;
+
+    padding: 8px 6px;
+    margin-top: auto;
+
+    font-size: 15px;
+}
+
+.item-status-button.is-clean {
+    color: var(--color-success);
+    background-color: var(--color-success-bg);
+}
+
+.item-status-button.is-dirty {
+    color: var(--color-error);
+    background-color: var(--color-dirty-bg);
+}
+
+.item-status-button:not(:disabled):active {
+    opacity: 0.8;
+}
+
+.item-status-button:disabled {
+    opacity: 0.6;
+}
+
+
+/* Ошибка загрузки вещей */
+#items-state-message.is-error {
+    color: var(--color-error);
+}
+
+
+/* Пустые состояния */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 16px;
+    min-height: 220px;
+
+    padding: 32px 20px;
+
+    text-align: center;
+}
+
+.empty-state-icon {
+    flex-shrink: 0;
+    color: var(--color-accent);
+}
+
+.empty-state p {
+    max-width: 260px;
+
+    color: var(--color-muted);
+
+    font-size: 16px;
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* Формы */
+.item-form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 20px;
+
+    width: 100%;
+    min-width: 0;
+}
+
+.item-form h2 {
+    overflow-wrap: anywhere;
+}
+
+.form-fields {
+    display: flex;
+    flex-direction: column;
+
+    gap: 18px;
+
+    width: 100%;
+    min-width: 0;
+
+    margin: 0;
+    padding: 0;
+
+    border: 0;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+    min-width: 0;
+}
+
+.form-group > label,
+.status-group > legend {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+
+    color: var(--color-text);
+}
+
+
+/* Поля ввода */
+.form-input {
+    display: block;
+
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    min-height: 48px;
+
+    margin: 0;
+    padding: 12px;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-button);
+
+    background-color: var(--color-card);
+    color: var(--color-text);
+
+    font: inherit;
+    font-size: 16px;
+    line-height: 1.5;
+
+    scroll-margin-top: 16px;
+
+    scroll-margin-bottom: calc(
+        var(--nav-height) + var(--safe-bottom) + 16px
+    );
+}
+
+.form-input::placeholder {
+    color: var(--color-muted);
+}
+
+.form-input:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
+
+    border-color: var(--color-accent);
+}
+
+.form-input:disabled {
+    background-color: var(--color-disabled-bg);
+    color: var(--color-disabled-text);
+
+    opacity: 1;
+}
+
+
+/* Выбор фотографии */
+.photo-input {
+    padding: 8px;
+    overflow: hidden;
+}
+
+.photo-input::file-selector-button {
+    min-height: 36px;
+
+    margin-right: 8px;
+    padding: 6px 8px;
+
+    border: 0;
+    border-radius: 8px;
+
+    background-color: var(--color-accent-light);
+    color: var(--color-accent);
+
+    font: inherit;
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.photo-input:disabled::file-selector-button {
+    background-color: var(--color-disabled-bg);
+    color: var(--color-disabled-text);
+
+    cursor: not-allowed;
+}
+
+
+/* Предварительный просмотр */
+.photo-preview-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-width: 0;
+
+    padding: 8px;
+    overflow: hidden;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-button);
+
+    background-color: var(--color-background);
+}
+
+.photo-preview {
+    display: block;
+
+    width: auto;
+    height: auto;
+
+    max-width: 100%;
+    max-height: 280px;
+
+    object-fit: contain;
+
+    border-radius: 8px;
+}
+
+
+/* Выбор статуса */
+.status-group {
+    width: 100%;
+    min-width: 0;
+
+    margin: 0;
+    padding: 0;
+
+    border: 0;
+}
+
+.status-group > legend {
+    margin-bottom: 8px;
+    padding: 0;
+}
+
+.status-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 8px;
+}
+
+.status-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+    min-width: 0;
+    min-height: 48px;
+
+    padding: 10px 8px;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-button);
+
+    background-color: var(--color-card);
+
+    font-size: 16px;
+    font-weight: 500;
+
+    cursor: pointer;
+}
+
+.status-option input {
+    flex-shrink: 0;
+
+    width: 18px;
+    height: 18px;
+
+    margin: 0;
+
+    accent-color: var(--color-accent);
+}
+
+.status-option span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.status-option:has(input:checked) {
+    color: var(--color-accent);
+
+    background-color: var(--color-accent-light);
+    border-color: var(--color-accent);
+
+    font-weight: 600;
+}
+
+.status-option:focus-within {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+.status-option:has(input:disabled) {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* Кнопки форм */
+.form-actions {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+    min-width: 0;
+}
+
+
+/* Сообщения */
+.form-hint {
+    color: var(--color-muted);
+
+    font-size: 14px;
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+}
+
+.form-error {
+    color: var(--color-error);
+
+    font-size: 15px;
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+}
+
+.success-message:not(:empty) {
+    padding: 12px 16px;
+
+    border-radius: var(--radius-button);
+
+    background-color: var(--color-success-bg);
+    color: var(--color-success);
+
+    font-size: 16px;
+    font-weight: 600;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* Пустые сообщения не занимают место */
+.form-hint:empty,
+.form-error:empty,
+.success-message:empty {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    margin: 0;
+    padding: 0;
+
+    overflow: hidden;
+    clip-path: inset(50%);
+
+    white-space: nowrap;
+}
+
+
+/* Счётчики белья и носков */
+.counter-card {
+    display: flex;
+    flex-direction: column;
+
+    gap: 16px;
+}
+
+.counter-card h2 {
+    padding-bottom: 2px;
+}
+
+.counter-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+    min-width: 0;
+}
+
+.counter-label {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+
+    gap: 6px;
+    min-width: 0;
+
+    font-size: 16px;
+}
+
+.counter-value {
+    min-width: 0;
+    max-width: 100%;
+
+    overflow-wrap: anywhere;
+
+    font-size: 20px;
+    font-weight: 700;
+
+    font-variant-numeric: tabular-nums;
+}
+
+.counter-value-clean {
+    color: var(--color-success);
+}
+
+.counter-value-dirty {
+    color: var(--color-error);
+}
+
+.counter-actions {
+    display: flex;
+    flex-shrink: 0;
+
+    gap: 8px;
+}
+
+.button-counter {
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+
+    padding: 0;
+
+    border-radius: 10px;
+
+    background-color: var(--color-accent-light);
+    color: var(--color-accent);
+
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1;
+}
+
+.button-counter:not(:disabled):active {
+    background-color: #dcdcff;
+}
+
+.counter-card > .button-full {
+    margin-top: 4px;
+}
+
+
+/* Список образов */
+.outfits-stack {
+    display: flex;
+    flex-direction: column;
+
+    gap: 16px;
+    min-width: 0;
+}
+
+#outfits-list:empty {
+    display: none;
+}
+
+
+/* Карточка сохранённого образа */
+.outfit-card {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+    min-width: 0;
+}
+
+.outfit-card h2,
+#outfit-detail-title {
+    overflow-wrap: anywhere;
+}
+
+
+/* Фотографии образов */
+.outfit-card .item-photo-frame:not(.outfit-missing-photo),
+.outfit-picker-card .item-photo-frame:not(.outfit-missing-photo),
+#outfit-detail-items .item-photo-frame:not(.outfit-missing-photo) {
+    display: block;
+}
+
+
+/* Карточки выбора одежды */
+.outfit-picker-card {
+    cursor: pointer;
+
+    border: 2px solid var(--color-border);
+}
+
+.outfit-picker-card.is-selected {
+    border-color: var(--color-accent);
+    background-color: var(--color-accent-light);
+}
+
+.outfit-picker-card:focus-within {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+.outfit-picker-card:has(input:disabled) {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* Чекбокс выбора вещи */
+.outfit-picker-check {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+    min-width: 0;
+
+    margin-top: auto;
+
+    overflow-wrap: anywhere;
+
+    font-size: 14px;
+}
+
+.outfit-picker-check input {
+    flex-shrink: 0;
+
+    width: 20px;
+    height: 20px;
+
+    margin: 0;
+
+    accent-color: var(--color-accent);
+}
+
+
+/* Отсутствующая вещь */
+.outfit-missing-photo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 6px;
+
+    text-align: center;
+
+    color: var(--color-muted);
+
+    font-size: 13px;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* Нижняя навигация */
+.bottom-nav {
+    position: fixed;
+
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    z-index: 100;
+
+    height: calc(
+        var(--nav-height) + var(--safe-bottom)
+    );
+
+    padding-top: 7px;
+
+    padding-right: max(
+        4px,
+        env(safe-area-inset-right, 0px)
+    );
+
+    padding-bottom: calc(
+        7px + var(--safe-bottom)
+    );
+
+    padding-left: max(
+        4px,
+        env(safe-area-inset-left, 0px)
+    );
+
+    background-color: var(--color-card);
+
+    border-top: 1px solid var(--color-border);
+
+    box-shadow: 0 -4px 16px rgba(32, 35, 49, 0.04);
+}
+
+.bottom-nav-inner {
+    display: grid;
+
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 2px;
+
+    width: 100%;
+    max-width: 480px;
+    height: 100%;
+
+    margin: 0 auto;
+}
+
+.nav-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 44px;
+
+    padding: 4px 2px;
+
+    border: 0;
+    border-radius: 12px;
+
+    background-color: transparent;
+    color: var(--color-muted);
+
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.2;
+    text-align: center;
+
+    transition:
+        background-color 150ms ease,
+        color 150ms ease;
+}
+
+.nav-button span {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.nav-icon {
+    flex-shrink: 0;
+
+    width: 24px;
+    height: 24px;
+}
+
+.nav-button.is-active {
+    color: var(--color-accent);
+    background-color: var(--color-accent-light);
+
+    font-weight: 600;
+}
+
+.nav-button:not(:disabled):active {
+    background-color: var(--color-accent-light);
+}
+
+.nav-button:disabled {
+    opacity: 0.6;
+}
+
+
+/* Маленькие экраны */
+@media (max-width: 360px) {
+
+    .app-content {
+        padding-right: max(
+            12px,
+            env(safe-area-inset-right, 0px)
+        );
+
+        padding-left: max(
+            12px,
+            env(safe-area-inset-left, 0px)
+        );
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+
+    .card {
+        padding: 16px;
+    }
+
+    .filters {
+        gap: 6px;
+    }
+
+    .counter-row {
+        gap: 8px;
+    }
+
+    .nav-button {
+        font-size: 12px;
+    }
+
+    .status-options {
+        gap: 6px;
+    }
+
+    .status-option {
+        gap: 6px;
+        padding: 10px 6px;
+    }
+
+    .photo-preview {
+        max-height: 240px;
+    }
+}
+
+
+/* Отключение анимаций */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+    }
+}

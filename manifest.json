@@ -1,0 +1,26 @@
+
+{
+    "name": "Мой гардероб",
+    "short_name": "Гардероб",
+    "description": "Личный гардероб, учёт одежды и создание образов",
+    "lang": "ru",
+    "start_url": "./",
+    "scope": "./",
+    "display": "standalone",
+    "background_color": "#f5f6fa",
+    "theme_color": "#5b5ce2",
+    "icons": [
+        {
+            "src": "./icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "./icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        }
+    ]
+}
